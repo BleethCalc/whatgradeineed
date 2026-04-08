@@ -1,468 +1,458 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="This grade calculator helps you determine the score you need on your final exam or remaining assignments to achieve your desired grade." />
-  <title>What Grade Do I Need to Pass? | Grade Calculator</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="This grade calculator helps you determine the score you need on your final exam or remaining assignments to achieve your desired grade."/>
+<title>What Grade Do I Need to Pass? | Grade Calculator</title>
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS ── */
+:root {
+  --accent: #c8392b;
+  --bg: #f4f1eb;
+  --surface: #faf8f3;
+  --surface2: #ede9e0;
+  --ink: #1a1714;
+  --ink2: #5a5650;
+  --ink3: #9a9690;
+  --rule: rgba(26,23,20,0.15);
+  --rule-strong: rgba(26,23,20,0.35);
+  --input-bg: #faf8f3;
+  --max-w: 920px;
+  --danger: #c8392b;
+  --success: #1a6b3a;
+  --warn: #b06a00;
+}
+body.dark {
+  --bg: #13110d;
+  --surface: #1c1914;
+  --surface2: #252118;
+  --ink: #f0ece4;
+  --ink2: #a09890;
+  --ink3: #6a6460;
+  --rule: rgba(240,236,228,0.1);
+  --rule-strong: rgba(240,236,228,0.3);
+  --input-bg: #252118;
+  --success: #2ecc71;
+  --warn: #f0a500;
+  --danger: #e74c3c;
+}
 
-  <!-- Google AdSense — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID -->
-  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'IBM Plex Sans',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  transition:background .25s,color .25s;
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+/* ── AD SLOTS ── */
+.ad-slot{width:100%;display:block;overflow:hidden;}
+.ad-leaderboard{height:90px;}
+.ad-banner{height:60px;display:none;}
+.ad-rect{height:250px;}
+.ad-wrap{max-width:var(--max-w);margin:0 auto;padding:0 2rem;}
 
-  <style>
-    /* ── TOKENS ── */
-    :root {
-      --accent: #e05c2a;
-      --bg: #16140f;
-      --surface: #211e17;
-      --surface2: #2c2820;
-      --text: #f0ece5;
-      --text2: #9e9890;
-      --border: rgba(240,236,229,0.1);
-      --border-strong: rgba(240,236,229,0.4);
-      --row-bg: #1c1a14;
-      --danger: #c0392b;
-      --input-bg: #2c2820;
-      --max-w: 780px;
-    }
-    body.light {
-      --bg: #f5f2ed;
-      --surface: #ffffff;
-      --surface2: #ede9e2;
-      --text: #1a1714;
-      --text2: #6b6560;
-      --border: rgba(26,23,20,0.13);
-      --border-strong: rgba(26,23,20,0.5);
-      --row-bg: #faf8f5;
-      --input-bg: #ffffff;
-    }
+/* ── MASTHEAD ── */
+.masthead{
+  border-bottom:3px solid var(--ink);
+  background:var(--surface);
+  transition:background .25s,border-color .25s;
+}
+.masthead-inner{
+  max-width:var(--max-w);margin:0 auto;
+  padding:1.5rem 2rem 1.25rem;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+  gap:1rem;
+}
+.masthead-left{}
+.masthead-eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:.5rem;
+  display:flex;align-items:center;gap:10px;
+}
+.masthead-eyebrow::before{
+  content:'';display:inline-block;width:24px;height:2px;background:var(--accent);
+}
+.masthead-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,4.5vw,52px);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-.5px;
+  color:var(--accent);
+  transition:color .2s;
+}
+.masthead-rule{
+  height:1px;background:var(--rule);margin:.75rem 0 0;
+}
+.masthead-controls{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding-bottom:2px;
+}
+.dot{
+  width:20px;height:20px;border-radius:50%;
+  cursor:pointer;border:2px solid transparent;
+  transition:transform .15s,border-color .15s;flex-shrink:0;
+}
+.dot:hover{transform:scale(1.18);}
+.dot.on{border-color:var(--ink);}
+.ctrl-btn{
+  width:34px;height:34px;border-radius:4px;
+  border:1.5px solid var(--rule-strong);
+  background:transparent;color:var(--ink);
+  cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,color .15s,border-color .15s,transform .1s;
+  flex-shrink:0;
+}
+.ctrl-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:scale(.97);}
 
-    /* ── RESET ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Syne', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      transition: background 0.2s, color 0.2s;
-    }
+/* ── HOW TO ── */
+.howto{
+  border-bottom:1px solid var(--rule);
+  background:var(--surface);
+  transition:background .25s,border-color .25s;
+}
+.howto-inner{max-width:var(--max-w);margin:0 auto;}
+.howto-toggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem 2rem;background:transparent;border:none;cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ink3);transition:color .15s;gap:8px;
+}
+.howto-toggle:hover{color:var(--accent);}
+.howto-arrow{transition:transform .2s;font-size:9px;}
+.howto-arrow.open{transform:rotate(180deg);}
+.howto-body{display:none;padding:0 2rem 1.25rem;}
+.howto-body.open{display:block;}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.step{display:flex;gap:9px;align-items:flex-start;}
+.step-n{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;
+  color:var(--accent);flex-shrink:0;margin-top:2px;min-width:16px;
+}
+.step-t{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink2);line-height:1.6;}
+.step-t b{color:var(--ink);font-weight:500;}
 
-    /* ── ADSENSE SLOTS ── */
-    /* These are invisible placeholders. Swap .ad-slot content for real ins tags when live. */
-    .ad-slot {
-      width: 100%;
-      display: block;
-      overflow: hidden;
-      /* Uncomment border below to visualize ad zones during development */
-      /* border: 2px dashed rgba(128,128,128,0.3); */
-    }
-    .ad-slot-leaderboard { height: 90px; }   /* 728x90 leaderboard */
-    .ad-slot-rectangle  { height: 250px; }   /* 300x250 rectangle  */
-    .ad-slot-banner     { height: 60px; }    /* mobile banner      */
+/* ── PAGE BODY ── */
+.page-body{
+  max-width:var(--max-w);margin:0 auto;
+  padding:2rem 2rem;
+  display:grid;
+  grid-template-columns:1fr 270px;
+  gap:2rem;
+  align-items:start;
+}
+.col-left{min-width:0;}
+.col-right{display:flex;flex-direction:column;gap:1.25rem;}
 
-    .ad-wrap {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
+/* ── SECTION HEADERS ── */
+.section-head{
+  display:flex;align-items:baseline;gap:1rem;
+  border-bottom:2px solid var(--ink);
+  padding-bottom:.4rem;margin-bottom:1rem;
+}
+.section-head h2{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;color:var(--ink);
+  letter-spacing:-.2px;
+}
+.section-head span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:var(--ink3);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-left:auto;
+}
 
-    /* ── HEADER ── */
-    .page-header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem 1.5rem 1.25rem;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .page-header-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-    .title-main {
-      font-size: clamp(18px, 4vw, 26px);
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--accent);          /* title matches accent */
-      line-height: 1.15;
-      max-width: 480px;
-      transition: color 0.2s;
-    }
-    .title-sub {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px; color: var(--text2);
-      margin-top: 5px; letter-spacing: 0.08em; text-transform: uppercase;
-    }
+/* ── ASSIGNMENT TABLE ── */
+.a-table{
+  border:1.5px solid var(--ink);
+  border-radius:0;
+  overflow:hidden;
+  margin-bottom:1.25rem;
+  background:var(--surface);
+  transition:background .25s,border-color .25s;
+}
+.a-head{
+  display:grid;grid-template-columns:1fr 118px 108px 96px 38px;
+  padding:8px 14px;gap:8px;
+  background:var(--ink);
+}
+.a-head .th{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:.1em;
+  color:var(--bg);opacity:.8;
+}
+.a-row{
+  display:grid;grid-template-columns:1fr 118px 108px 96px 38px;
+  padding:8px 14px;gap:8px;align-items:center;
+  border-bottom:1px solid var(--rule);
+  background:var(--surface);transition:background .1s;
+}
+.a-row:last-child{border-bottom:none;}
+.a-row:hover{background:var(--surface2);}
+input[type=text],input[type=number],select{
+  background:var(--input-bg);
+  border:1px solid var(--rule-strong);
+  color:var(--ink);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;padding:5px 8px;
+  border-radius:3px;width:100%;
+  transition:border-color .15s,background .25s,color .25s;outline:none;
+}
+input:focus,select:focus{border-color:var(--accent);}
+input[type=number]{text-align:right;}
+.del-btn{
+  width:26px;height:26px;border-radius:3px;
+  border:1px solid var(--rule-strong);background:transparent;
+  color:var(--ink3);cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.del-btn:hover{background:#c8392b18;color:#c8392b;border-color:#c8392b55;}
+.add-btn{
+  width:100%;padding:9px;border:none;background:transparent;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  font-weight:500;letter-spacing:.05em;
+  color:var(--accent);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  border-top:1px solid var(--rule);
+  transition:background .15s;
+}
+.add-btn:hover{background:var(--surface2);}
 
-    .header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* ── WEIGHT BAR ── */
+.wbar-wrap{margin-bottom:1.5rem;}
+.wbar-label{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink3);
+  margin-bottom:6px;display:flex;justify-content:space-between;
+}
+.wbar-label span{color:var(--ink);font-weight:500;}
+.wbar-track{
+  height:8px;background:var(--surface2);
+  border:1px solid var(--rule-strong);
+  position:relative;overflow:hidden;
+}
+.wbar-fill{
+  height:100%;background:var(--accent);
+  transition:width .35s ease,background .2s;
+}
+.wbar-fill.over{background:#c8392b;}
+.wbar-meta{display:flex;justify-content:space-between;margin-top:5px;}
+.wbar-meta span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);}
+.wbar-meta span b{color:var(--ink);}
 
-    .accent-dot {
-      width: 20px; height: 20px; border-radius: 50%;
-      cursor: pointer; border: 2px solid transparent;
-      transition: transform 0.15s, border-color 0.15s; flex-shrink: 0;
-    }
-    .accent-dot:hover { transform: scale(1.15); }
-    .accent-dot.active { border-color: var(--text); }
+/* ── STAT ROW ── */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1.5px solid var(--ink);margin-bottom:1.25rem;
+  background:var(--surface);transition:background .25s,border-color .25s;
+}
+.stat{
+  padding:14px 14px 12px;
+  border-right:1px solid var(--rule);
+}
+.stat:last-child{border-right:none;}
+.stat-label{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink3);margin-bottom:6px;
+}
+.stat-val{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--ink);line-height:1;
+}
+.ga{color:#1a6b3a!important;} .gb{color:#1a55a0!important;} .gc{color:#b06a00!important;} .gd{color:#c8392b!important;}
+body.dark .ga{color:#2ecc71!important;} body.dark .gb{color:#5dade2!important;} body.dark .gc{color:#f0a500!important;} body.dark .gd{color:#e74c3c!important;}
 
-    .icon-btn {
-      width: 34px; height: 34px; border-radius: 8px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--surface2); color: var(--text);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px;
-      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
-      flex-shrink: 0;
-    }
-    .icon-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(0.97); }
+/* ── RESET ── */
+.actions{margin-bottom:1.5rem;}
+.reset-btn{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:8px 16px;border:1.5px solid var(--rule-strong);
+  background:transparent;color:var(--ink2);cursor:pointer;border-radius:3px;
+  transition:color .15s,border-color .15s,background .15s,transform .1s;
+}
+.reset-btn:hover{color:#c8392b;border-color:#c8392b;background:#c8392b0d;transform:scale(.98);}
 
-    /* ── HOW TO ── */
-    .how-to {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .how-to-inner { max-width: var(--max-w); margin: 0 auto; }
-    .how-to-toggle {
-      width: 100%; display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.5rem;
-      background: transparent; border: none; cursor: pointer;
-      color: var(--text2);
-      font-family: 'DM Mono', monospace; font-size: 11px;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      transition: color 0.15s; gap: 8px;
-    }
-    .how-to-toggle:hover { color: var(--accent); }
-    .how-to-toggle-left { display: flex; align-items: center; gap: 8px; }
-    .how-to-arrow { font-size: 10px; transition: transform 0.2s; display: inline-block; }
-    .how-to-arrow.open { transform: rotate(180deg); }
-    .how-to-body { display: none; padding: 0 1.5rem 1.25rem; }
-    .how-to-body.open { display: block; }
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
-    }
-    .step { display: flex; gap: 10px; align-items: flex-start; }
-    .step-num {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--accent); color: #fff;
-      font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px; transition: background 0.2s;
-    }
-    .step-text { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); line-height: 1.6; }
-    .step-text b { color: var(--text); font-weight: 500; }
+/* ── GRADE SCALE ── */
+.scale-section{border-top:1px solid var(--rule);padding-top:1.25rem;}
+.scale-label{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink3);margin-bottom:8px;}
+.scale{display:flex;gap:4px;flex-wrap:wrap;}
+.chip{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  padding:2px 7px;border:1px solid var(--rule-strong);color:var(--ink3);
+  background:var(--surface2);border-radius:2px;
+  transition:background .2s;
+}
 
-    /* ── MAIN ── */
-    .main { max-width: var(--max-w); margin: 0 auto; padding: 1.75rem 1.5rem; }
+/* ── SIDEBAR ── */
+.tool-card{
+  border:1.5px solid var(--ink);
+  background:var(--surface);
+  transition:background .25s,border-color .25s;
+}
+.tool-card-head{
+  background:var(--ink);
+  padding:8px 14px;
+  display:flex;align-items:center;gap:8px;
+  transition:background .25s;
+}
+.tool-card-head span{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:var(--bg);opacity:.85;
+}
+.tool-card-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.tool-body{padding:14px;}
+.tool-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.tool-row label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink2);white-space:nowrap;min-width:80px;}
+.tool-row input[type=number]{width:68px;flex-shrink:0;}
+.unit{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);}
+.tool-result{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  padding:9px 10px;
+  border:1px solid var(--rule);
+  background:var(--surface2);color:var(--ink);
+  line-height:1.6;min-height:38px;
+  display:flex;align-items:center;
+  transition:background .2s,color .2s;
+}
+.ok{color:var(--success);font-weight:500;}
+.warn{color:var(--warn);font-weight:500;}
+.bad{color:var(--danger);font-weight:500;}
 
-    .section-label {
-      font-family: 'DM Mono', monospace; font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--text2); margin-bottom: 8px;
-    }
+/* ── SIDEBAR AD ── */
+.side-ad{
+  border:1.5px solid var(--rule);
+  min-height:250px;
+  background:var(--surface);
+  transition:background .25s,border-color .25s;
+}
 
-    /* ── TABLE ── */
-    .table-wrap {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden; margin-bottom: 1rem;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .table-head {
-      display: grid;
-      grid-template-columns: 1fr 120px 120px 100px 44px;
-      padding: 10px 16px;
-      background: var(--surface2); border-bottom: 1px solid var(--border);
-      gap: 8px; transition: background 0.2s;
-    }
-    .th {
-      font-family: 'DM Mono', monospace; font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.08em; color: var(--text2);
-    }
+/* ── FOOTER ── */
+.footer-desc{max-width:var(--max-w);margin:0 auto;padding:0 2rem 3rem;}
+.footer-desc p{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);line-height:1.8;
+  border-top:1px solid var(--rule);padding-top:1.25rem;
+  transition:color .2s,border-color .2s;
+}
 
-    .desk-row {
-      display: grid;
-      grid-template-columns: 1fr 120px 120px 100px 44px;
-      padding: 8px 16px; border-bottom: 1px solid var(--border);
-      align-items: center; gap: 8px;
-      background: var(--row-bg); transition: background 0.1s;
-    }
-    .desk-row:last-child { border-bottom: none; }
-    .desk-row:hover { background: var(--surface2); }
+/* ── MOBILE CARDS ── */
+.mob-card{
+  display:none;
+  border:1.5px solid var(--ink);
+  background:var(--surface);
+  margin-bottom:10px;
+  padding:12px;
+  transition:background .25s,border-color .25s;
+}
+.mob-card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.mob-card-top input[type=text]{flex:1;font-size:14px;padding:8px 10px;}
+.mob-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mob-field label{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);display:block;margin-bottom:3px;}
+.mob-field select,.mob-field input[type=number]{font-size:14px;padding:8px 10px;}
+.mob-add-wrap{
+  border:1.5px solid var(--ink);background:var(--surface);
+  margin-bottom:1rem;display:none;
+  transition:background .25s,border-color .25s;
+}
 
-    /* ── INPUTS (shared) ── */
-    input[type="text"], input[type="number"], select {
-      background: var(--input-bg); border: 1px solid var(--border);
-      color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px;
-      padding: 6px 8px; border-radius: 6px; width: 100%;
-      transition: border-color 0.15s, background 0.2s, color 0.2s; outline: none;
-    }
-    input:focus, select:focus { border-color: var(--accent); }
-    input[type="number"] { text-align: right; }
-
-    .del-btn {
-      width: 28px; height: 28px; border-radius: 6px;
-      border: 1px solid var(--border-strong); background: transparent;
-      color: var(--text2); cursor: pointer; font-size: 15px;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .del-btn:hover { background: #c0392b22; color: #c0392b; border-color: #c0392b66; }
-
-    .add-row-btn {
-      width: 100%; padding: 10px; border: none; background: transparent;
-      color: var(--accent); font-family: 'Syne', sans-serif;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      transition: background 0.15s;
-    }
-    .add-row-btn:hover { background: var(--surface2); }
-
-    /* ── WEIGHT BAR ── */
-    .weight-bar-wrap { margin-bottom: 1.5rem; }
-    .weight-bar-track {
-      height: 10px; background: var(--surface2);
-      border-radius: 99px; overflow: hidden; border: 1px solid var(--border);
-      transition: background 0.2s;
-    }
-    .weight-bar-fill {
-      height: 100%; border-radius: 99px; background: var(--accent);
-      transition: width 0.3s ease, background 0.2s;
-    }
-    .weight-bar-fill.over { background: var(--danger); }
-    .weight-meta { display: flex; justify-content: space-between; margin-top: 5px; }
-    .weight-pct { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
-    .weight-pct span { color: var(--text); font-weight: 500; }
-
-    /* ── METRIC CARDS ── */
-    .cards-row {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 10px; margin-bottom: 1.5rem;
-    }
-    .metric-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 14px;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .metric-label {
-      font-family: 'DM Mono', monospace; font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--text2); margin-bottom: 4px;
-    }
-    .metric-value {
-      font-size: 22px; font-weight: 700; color: var(--text);
-      font-family: 'DM Mono', monospace; line-height: 1;
-    }
-    .grade-a { color: #1d9e52 !important; }
-    .grade-b { color: #2176b8 !important; }
-    .grade-c { color: #c07c00 !important; }
-    .grade-df { color: #c0392b !important; }
-    body.light .grade-a { color: #157a3e !important; }
-    body.light .grade-b { color: #1760a0 !important; }
-    body.light .grade-c { color: #a06500 !important; }
-    body.light .grade-df { color: #b02020 !important; }
-
-    /* ── BUTTONS ── */
-    .actions-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .btn-reset {
-      padding: 10px 18px; border-radius: 8px;
-      font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
-      cursor: pointer; background: transparent; color: var(--text2);
-      border: 1.5px solid var(--border-strong);
-      transition: transform 0.1s, color 0.15s, border-color 0.15s, background 0.15s;
-    }
-    .btn-reset:hover { color: var(--danger); border-color: var(--danger); background: #c0392b11; transform: scale(0.98); }
-
-    /* ── TOOL CARDS ── */
-    .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
-    .tool-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 16px;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .tool-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-    .tool-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; transition: background 0.2s; }
-    .tool-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .tool-row label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); white-space: nowrap; min-width: 80px; }
-    .tool-row input[type="number"] { width: 70px; flex-shrink: 0; }
-    .unit-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
-    .tool-result {
-      font-family: 'DM Mono', monospace; font-size: 12px;
-      padding: 8px 10px; border-radius: 8px;
-      background: var(--surface2); color: var(--text);
-      margin-top: 4px; min-height: 36px;
-      display: flex; align-items: center; line-height: 1.5;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .highlight-good { color: #1a8f48; font-weight: 700; }
-    .highlight-warn { color: #b87000; font-weight: 700; }
-    .highlight-bad  { color: #c0392b; font-weight: 700; }
-    body:not(.light) .highlight-good { color: #2ecc71; }
-    body:not(.light) .highlight-warn { color: #f0a500; }
-    body:not(.light) .highlight-bad  { color: #e74c3c; }
-
-    /* ── FOOTER DESCRIPTION ── */
-    .footer-desc {
-      max-width: var(--max-w); margin: 0 auto;
-      padding: 0 1.5rem 2rem;
-    }
-    .footer-desc p {
-      font-family: 'DM Mono', monospace; font-size: 12px;
-      color: var(--text2); line-height: 1.7;
-      border-top: 1px solid var(--border);
-      padding-top: 1.25rem;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    /* ── GRADE SCALE ── */
-    .grade-scale { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
-    .grade-chip {
-      font-family: 'DM Mono', monospace; font-size: 10px;
-      padding: 2px 7px; border-radius: 4px;
-      border: 1px solid var(--border); color: var(--text2);
-      background: var(--surface2); transition: background 0.2s, border-color 0.2s;
-    }
-    hr.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-
-    /* ── MOBILE ── */
-    @media (max-width: 620px) {
-      .table-wrap .table-head,
-      .table-wrap .desk-row { display: none; }
-
-      .mob-card {
-        display: block;
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: 12px; padding: 12px; margin-bottom: 10px;
-        transition: background 0.2s, border-color 0.2s;
-      }
-      .mob-card-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 10px; gap: 8px;
-      }
-      .mob-card-header input[type="text"] { flex: 1; font-size: 14px; padding: 8px 10px; }
-      .mob-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-      .mob-field label {
-        font-family: 'DM Mono', monospace; font-size: 10px;
-        text-transform: uppercase; letter-spacing: 0.06em;
-        color: var(--text2); display: block; margin-bottom: 3px;
-      }
-      .mob-field select,
-      .mob-field input[type="number"] { font-size: 14px; padding: 8px 10px; }
-
-      .mob-add-wrap {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: 12px; overflow: hidden; margin-bottom: 1rem;
-        transition: background 0.2s, border-color 0.2s;
-      }
-
-      .cards-row { grid-template-columns: repeat(2, 1fr); }
-      .tools-grid { grid-template-columns: 1fr; }
-
-      .ad-slot-leaderboard { display: none; }   /* hide leaderboard on mobile */
-      .ad-slot-banner { display: block; }        /* show banner on mobile instead */
-
-      .page-header { padding: 1rem 1rem 0.9rem; }
-      .main { padding: 1.25rem 1rem; }
-      .how-to-toggle { padding: 0.75rem 1rem; }
-      .how-to-body { padding: 0 1rem 1rem; }
-      .footer-desc { padding: 0 1rem 2rem; }
-      .ad-wrap { padding: 0 1rem; }
-      .steps-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (min-width: 621px) {
-      .mob-card { display: none; }
-      .mob-add-wrap { display: none; }
-      .ad-slot-banner { display: none; }   /* hide mobile banner on desktop */
-    }
-  </style>
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .page-body{grid-template-columns:1fr;padding:1.25rem 1rem;gap:1.25rem;}
+  .col-right{order:2;}.col-left{order:1;}
+  .a-table .a-head,.a-table .a-row{display:none;}
+  .mob-card{display:block;}
+  .mob-add-wrap{display:block;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .stat:nth-child(2){border-right:none;}
+  .stat:nth-child(3){border-top:1px solid var(--rule);}
+  .stat:nth-child(4){border-top:1px solid var(--rule);border-right:none;}
+  .stat-val{font-size:22px;}
+  .ad-leaderboard{display:none;}
+  .ad-banner{display:block;}
+  .masthead-inner{grid-template-columns:1fr;gap:.75rem;padding:1.25rem 1rem 1rem;}
+  .masthead-title{font-size:clamp(24px,7vw,36px);}
+  .howto-toggle{padding:.7rem 1rem;}
+  .howto-body{padding:0 1rem 1rem;}
+  .steps{grid-template-columns:1fr;}
+  .footer-desc{padding:0 1rem 2.5rem;}
+  .ad-wrap{padding:0 1rem;}
+  .side-ad{min-height:160px;}
+}
+@media(min-width:681px){
+  .mob-card{display:none!important;}
+  .mob-add-wrap{display:none!important;}
+  .ad-banner{display:none!important;}
+}
+</style>
 </head>
 <body>
 
-  <!-- ══ TOP LEADERBOARD AD (desktop) ══ -->
-  <div class="ad-slot ad-slot-leaderboard" aria-hidden="true">
-    <div class="ad-wrap">
-      <!-- AdSense leaderboard 728x90 — paste <ins> tag here when live -->
-      <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
-      <!-- <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+<!-- TOP AD -->
+<div class="ad-slot ad-leaderboard" aria-hidden="true"><div class="ad-wrap"><!-- leaderboard 728x90 --></div></div>
+<div class="ad-slot ad-banner" aria-hidden="true"><div class="ad-wrap"><!-- mobile banner --></div></div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="masthead-eyebrow">Grade Calculator &nbsp;/&nbsp; Academic Tools</div>
+      <div class="masthead-title" id="siteTitle">What Grade Do I Need to Pass?</div>
+      <div class="masthead-rule"></div>
+    </div>
+    <div class="masthead-controls">
+      <div id="picker" style="display:flex;gap:5px;align-items:center;"></div>
+      <button class="ctrl-btn" id="themeBtn" title="Toggle dark mode">&#9790;</button>
+      <button class="ctrl-btn" id="resetIconBtn" title="Reset" style="font-size:13px;">&#8635;</button>
     </div>
   </div>
+</header>
 
-  <!-- ══ MOBILE BANNER AD ══ -->
-  <div class="ad-slot ad-slot-banner" aria-hidden="true">
-    <div class="ad-wrap">
-      <!-- AdSense mobile banner — paste <ins> tag here when live -->
-    </div>
-  </div>
-
-  <!-- ══ HEADER ══ -->
-  <header class="page-header">
-    <div class="page-header-inner">
-      <div>
-        <div class="title-main" id="siteTitle">What Grade Do I Need to Pass?</div>
-        <div class="title-sub">weighted &middot; smart &middot; precise</div>
-      </div>
-      <div class="header-controls">
-        <div id="accentPicker" style="display:flex;gap:5px;align-items:center;"></div>
-        <button class="icon-btn" id="themeToggle" title="Toggle light/dark mode">&#9790;</button>
-        <button class="icon-btn" id="resetIconBtn" title="Reset all" style="font-size:13px;">&#8635;</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ══ HOW TO USE ══ -->
-  <div class="how-to">
-    <div class="how-to-inner">
-      <button class="how-to-toggle" id="howToToggle">
-        <span class="how-to-toggle-left">&#9432;&nbsp; How to use</span>
-        <span class="how-to-arrow" id="howToArrow">&#9660;</span>
-      </button>
-      <div class="how-to-body" id="howToBody">
-        <div class="steps-grid">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-text"><b>Add assignments</b> using the + button. Give each one a name, category, your score %, and how much it's worth (weight %).</div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-text"><b>Watch the weight bar.</b> All your weights should add up to 100%. It turns red if you go over.</div>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-text"><b>Your grade updates live</b> as you type — no button needed. Current grade, letter, and weighted points show above.</div>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-text"><b>Need to pass?</b> Set your passing % on the left card. It tells you exactly what score you need on remaining work.</div>
-          </div>
-          <div class="step">
-            <div class="step-num">5</div>
-            <div class="step-text"><b>Targeting a grade?</b> Enter your goal % and how much weight is left in your class. It calculates what you need to get there.</div>
-          </div>
-        </div>
+<!-- HOW TO -->
+<div class="howto">
+  <div class="howto-inner">
+    <button class="howto-toggle" id="howtoToggle">
+      <span style="display:flex;align-items:center;gap:8px;">&#9432;&nbsp; How to use</span>
+      <span class="howto-arrow" id="howtoArrow">&#9660;</span>
+    </button>
+    <div class="howto-body" id="howtoBody">
+      <div class="steps">
+        <div class="step"><div class="step-n">01</div><div class="step-t"><b>Add assignments</b> with the + button. Enter a name, category, your score %, and the assignment's weight %.</div></div>
+        <div class="step"><div class="step-n">02</div><div class="step-t"><b>Weight bar</b> tracks your total. Weights should sum to 100%. Bar turns red if you exceed it.</div></div>
+        <div class="step"><div class="step-n">03</div><div class="step-t"><b>Live grade</b> calculates instantly as you type. No button needed — current grade and letter update automatically.</div></div>
+        <div class="step"><div class="step-n">04</div><div class="step-t"><b>To pass:</b> set your pass threshold %. The tool tells you exactly what you need on remaining work to hit it.</div></div>
+        <div class="step"><div class="step-n">05</div><div class="step-t"><b>Target grade:</b> enter your goal % and remaining weight. Get the exact score needed to reach your goal.</div></div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ══ MAIN CONTENT ══ -->
-  <main class="main">
+<!-- MAIN -->
+<div class="page-body">
+  <div class="col-left">
 
-    <div class="section-label" style="margin-bottom:10px;">Assignments</div>
+    <div class="section-head">
+      <h2>Assignments</h2>
+      <span id="countLabel">0 entries</span>
+    </div>
 
-    <!-- Desktop table -->
-    <div class="table-wrap" id="desktopTableWrap">
-      <div class="table-head">
+    <!-- desktop table -->
+    <div class="a-table">
+      <div class="a-head">
         <div class="th">Assignment</div>
         <div class="th">Category</div>
         <div class="th" style="text-align:right;">Score %</div>
@@ -470,336 +460,264 @@
         <div class="th"></div>
       </div>
       <div id="deskRows"></div>
-      <button class="add-row-btn" id="addRowDesk">+ Add Assignment</button>
+      <button class="add-btn" id="addDesk">+ Add Assignment</button>
     </div>
 
-    <!-- Mobile cards -->
+    <!-- mobile cards -->
     <div id="mobCards"></div>
-    <div class="mob-add-wrap">
-      <button class="add-row-btn" id="addRowMob">+ Add Assignment</button>
-    </div>
+    <div class="mob-add-wrap"><button class="add-btn" id="addMob">+ Add Assignment</button></div>
 
-    <!-- Weight bar -->
-    <div class="weight-bar-wrap" style="margin-top:4px;">
-      <div class="section-label">Total Weight Used</div>
-      <div class="weight-bar-track"><div class="weight-bar-fill" id="weightBar" style="width:0%"></div></div>
-      <div class="weight-meta">
-        <span class="weight-pct">Assigned: <span id="weightUsed">0%</span></span>
-        <span class="weight-pct">Remaining: <span id="weightRem">100%</span></span>
+    <!-- weight bar -->
+    <div class="wbar-wrap">
+      <div class="wbar-label">
+        <span>Total weight used</span>
+        <span>Remaining: <b id="wRem">100%</b></span>
+      </div>
+      <div class="wbar-track"><div class="wbar-fill" id="wBar" style="width:0%"></div></div>
+      <div class="wbar-meta">
+        <span>Assigned: <b id="wUsed">0%</b></span>
+        <span id="wOver" style="color:var(--danger);display:none;font-weight:500;">⚠ Over 100%</span>
       </div>
     </div>
 
-    <!-- Metrics -->
-    <div class="cards-row">
-      <div class="metric-card"><div class="metric-label">Current Grade</div><div class="metric-value" id="mGrade">—</div></div>
-      <div class="metric-card"><div class="metric-label">Letter Grade</div><div class="metric-value" id="mLetter">—</div></div>
-      <div class="metric-card"><div class="metric-label">Weighted Pts</div><div class="metric-value" id="mWeighted">—</div></div>
-      <div class="metric-card"><div class="metric-label">Assignments</div><div class="metric-value" id="mCount">0</div></div>
+    <!-- stats -->
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Current Grade</div><div class="stat-val" id="sGrade">—</div></div>
+      <div class="stat"><div class="stat-label">Letter Grade</div><div class="stat-val" id="sLetter">—</div></div>
+      <div class="stat"><div class="stat-label">Weighted Pts</div><div class="stat-val" id="sWeighted">—</div></div>
+      <div class="stat"><div class="stat-label">Assignments</div><div class="stat-val" id="sCount">0</div></div>
     </div>
 
-    <!-- Reset -->
-    <div class="actions-row">
-      <button class="btn-reset" id="resetBtn">&#8635; Reset All</button>
+    <div class="actions">
+      <button class="reset-btn" id="resetBtn">&#8635;&ensp;Reset All</button>
     </div>
 
-    <!-- Tool cards -->
-    <div class="tools-grid">
-      <div class="tool-card">
-        <div class="tool-title"><div class="tool-dot"></div>What I need to pass</div>
+    <!-- grade scale -->
+    <div class="scale-section">
+      <div class="scale-label">Grade Scale Reference</div>
+      <div class="scale">
+        <div class="chip">A+ ≥97</div><div class="chip">A ≥93</div><div class="chip">A- ≥90</div>
+        <div class="chip">B+ ≥87</div><div class="chip">B ≥83</div><div class="chip">B- ≥80</div>
+        <div class="chip">C+ ≥77</div><div class="chip">C ≥73</div><div class="chip">C- ≥70</div>
+        <div class="chip">D+ ≥67</div><div class="chip">D ≥63</div><div class="chip">D- ≥60</div>
+        <div class="chip">F &lt;60</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-right">
+
+    <!-- pass card -->
+    <div class="tool-card">
+      <div class="tool-card-head"><div class="tool-card-dot"></div><span>What I Need to Pass</span></div>
+      <div class="tool-body">
         <div class="tool-row">
           <label>Pass at</label>
-          <input type="number" id="passThresh" value="60" min="0" max="100" step="1">
-          <span class="unit-label">%</span>
+          <input type="number" id="passAt" value="60" min="0" max="100" step="1">
+          <span class="unit">%</span>
         </div>
-        <div class="tool-result" id="passResult"><span style="color:var(--text2)">Add assignments to calculate.</span></div>
+        <div class="tool-result" id="passResult"><span style="color:var(--ink3)">Add assignments to calculate.</span></div>
       </div>
-      <div class="tool-card">
-        <div class="tool-title"><div class="tool-dot"></div>Target grade calculator</div>
+    </div>
+
+    <!-- target card -->
+    <div class="tool-card">
+      <div class="tool-card-head"><div class="tool-card-dot"></div><span>Target Grade Calculator</span></div>
+      <div class="tool-body">
         <div class="tool-row">
           <label>I want</label>
-          <input type="number" id="targetGrade" value="90" min="0" max="100" step="1">
-          <span class="unit-label">%</span>
+          <input type="number" id="targetPct" value="90" min="0" max="100" step="1">
+          <span class="unit">%</span>
         </div>
         <div class="tool-row">
           <label>Remaining wt.</label>
-          <input type="number" id="remainingWeight" value="30" min="0" max="100" step="1">
-          <span class="unit-label">%</span>
+          <input type="number" id="remWt" value="30" min="0" max="100" step="1">
+          <span class="unit">%</span>
         </div>
-        <div class="tool-result" id="targetResult"><span style="color:var(--text2)">Fill in values above to calculate.</span></div>
+        <div class="tool-result" id="targetResult"><span style="color:var(--ink3)">Fill in values above.</span></div>
       </div>
     </div>
 
-    <!-- Grade scale -->
-    <hr class="divider">
-    <div class="section-label">Grade Scale Reference</div>
-    <div class="grade-scale">
-      <div class="grade-chip">A+ ≥97</div><div class="grade-chip">A ≥93</div><div class="grade-chip">A- ≥90</div>
-      <div class="grade-chip">B+ ≥87</div><div class="grade-chip">B ≥83</div><div class="grade-chip">B- ≥80</div>
-      <div class="grade-chip">C+ ≥77</div><div class="grade-chip">C ≥73</div><div class="grade-chip">C- ≥70</div>
-      <div class="grade-chip">D+ ≥67</div><div class="grade-chip">D ≥63</div><div class="grade-chip">D- ≥60</div>
-      <div class="grade-chip">F &lt;60</div>
+    <!-- sidebar ad -->
+    <div class="side-ad" aria-hidden="true">
+      <!-- sidebar 300x250 ad — replace with <ins> tag when live -->
     </div>
 
-  </main>
-
-  <!-- ══ MID-PAGE RECTANGLE AD ══ -->
-  <div class="ad-slot ad-slot-rectangle" aria-hidden="true">
-    <div class="ad-wrap">
-      <!-- AdSense 300x250 rectangle — paste <ins> tag here when live -->
-      <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
-      <!-- <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
-    </div>
   </div>
+</div>
 
-  <!-- ══ FOOTER DESCRIPTION ══ -->
-  <div class="footer-desc">
-    <p>This grade calculator helps you determine the score you need on your final exam or remaining assignments to achieve your desired grade.</p>
-  </div>
+<!-- MID AD -->
+<div class="ad-slot ad-rect" aria-hidden="true"><div class="ad-wrap"><!-- rectangle ad --></div></div>
 
-  <!-- ══ BOTTOM LEADERBOARD AD ══ -->
-  <div class="ad-slot ad-slot-leaderboard" aria-hidden="true">
-    <div class="ad-wrap">
-      <!-- AdSense leaderboard 728x90 — paste <ins> tag here when live -->
-    </div>
-  </div>
+<!-- FOOTER -->
+<div class="footer-desc">
+  <p>This grade calculator helps you determine the score you need on your final exam or remaining assignments to achieve your desired grade.</p>
+</div>
 
-  <script>
-    const ACCENTS = ['#e05c2a','#2d7dc8','#1d7a4a','#8e44ad','#c0392b','#d4ac0d','#1a8fa0'];
-    const CATS = ['Homework','Quiz','Exam','Project','Lab','Participation','Extra Credit'];
-    let accentIdx = 0, rows = [], rowId = 0, isLight = false;
+<!-- BOTTOM AD -->
+<div class="ad-slot ad-leaderboard" aria-hidden="true"><div class="ad-wrap"><!-- bottom leaderboard --></div></div>
 
-    function setAccent(h) {
-      document.documentElement.style.setProperty('--accent', h);
-      document.body.style.setProperty('--accent', h);
-    }
+<script>
+const ACCENTS=['#c8392b','#1a6b9a','#1a6b3a','#6b3a8a','#b06a00','#2c7a6b','#8a3a1a'];
+const CATS=['Homework','Quiz','Exam','Project','Lab','Participation','Extra Credit'];
+let aIdx=0,rows=[],rid=0,dark=false;
 
-    function initPicker() {
-      const w = document.getElementById('accentPicker');
-      w.innerHTML = '';
-      ACCENTS.forEach((c, i) => {
-        const d = document.createElement('div');
-        d.className = 'accent-dot' + (i === accentIdx ? ' active' : '');
-        d.style.background = c;
-        d.onclick = () => { accentIdx = i; setAccent(c); initPicker(); };
-        w.appendChild(d);
-      });
-    }
+function setAccent(h){document.documentElement.style.setProperty('--accent',h);}
 
-    function toggleTheme() {
-      isLight = !isLight;
-      document.body.classList.toggle('light', isLight);
-      document.getElementById('themeToggle').innerHTML = isLight ? '&#9788;' : '&#9790;';
-    }
+function initPicker(){
+  const w=document.getElementById('picker');w.innerHTML='';
+  ACCENTS.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===aIdx?' on':'');
+    d.style.background=c;
+    d.onclick=()=>{aIdx=i;setAccent(c);initPicker();};
+    w.appendChild(d);
+  });
+}
 
-    document.getElementById('howToToggle').onclick = () => {
-      const body = document.getElementById('howToBody');
-      const arrow = document.getElementById('howToArrow');
-      const open = body.classList.toggle('open');
-      arrow.classList.toggle('open', open);
-    };
+function toggleDark(){
+  dark=!dark;
+  document.body.classList.toggle('dark',dark);
+  document.getElementById('themeBtn').innerHTML=dark?'&#9788;':'&#9790;';
+}
 
-    function getLetter(g) {
-      if (g>=97) return 'A+'; if (g>=93) return 'A'; if (g>=90) return 'A-';
-      if (g>=87) return 'B+'; if (g>=83) return 'B'; if (g>=80) return 'B-';
-      if (g>=77) return 'C+'; if (g>=73) return 'C'; if (g>=70) return 'C-';
-      if (g>=67) return 'D+'; if (g>=63) return 'D'; if (g>=60) return 'D-';
-      return 'F';
-    }
-    function getLetterCls(g) {
-      if (g>=90) return 'grade-a'; if (g>=80) return 'grade-b'; if (g>=70) return 'grade-c'; return 'grade-df';
-    }
-    function catOptions(sel) {
-      return CATS.map(c => `<option${c===sel?' selected':''}>${c}</option>`).join('');
-    }
+document.getElementById('howtoToggle').onclick=()=>{
+  const b=document.getElementById('howtoBody'),a=document.getElementById('howtoArrow');
+  b.classList.toggle('open');a.classList.toggle('open',b.classList.contains('open'));
+};
 
-    function isMobile() { return window.innerWidth <= 620; }
+const LTRS=(g)=>{
+  if(g>=97)return'A+';if(g>=93)return'A';if(g>=90)return'A-';
+  if(g>=87)return'B+';if(g>=83)return'B';if(g>=80)return'B-';
+  if(g>=77)return'C+';if(g>=73)return'C';if(g>=70)return'C-';
+  if(g>=67)return'D+';if(g>=63)return'D';if(g>=60)return'D-';
+  return'F';
+};
+const CLS=(g)=>g>=90?'ga':g>=80?'gb':g>=70?'gc':'gd';
+const esc=(s)=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const cats=(s)=>CATS.map(c=>`<option${c===s?' selected':''}>${c}</option>`).join('');
 
-    function addRow() {
-      rowId++;
-      rows.push({ id: rowId, name: '', category: 'Homework', score: '', weight: '' });
-      renderAll();
-    }
+function addRow(){rid++;rows.push({id:rid,name:'',cat:'Homework',score:'',weight:''});render();}
+function delRow(id){rows=rows.filter(r=>r.id!==id);render();calcAll();}
 
-    function deleteRow(id) {
-      rows = rows.filter(r => r.id !== id);
-      renderAll(); updateWeight(); doCalc();
-    }
+function render(){
+  renderDesk();renderMob();
+  const n=rows.length;
+  document.getElementById('sCount').textContent=n;
+  document.getElementById('countLabel').textContent=n+' entr'+(n===1?'y':'ies');
+}
 
-    function renderAll() {
-      renderDesk();
-      renderMob();
-      document.getElementById('mCount').textContent = rows.length;
-    }
+function renderDesk(){
+  const c=document.getElementById('deskRows');c.innerHTML='';
+  rows.forEach(r=>{
+    const d=document.createElement('div');d.className='a-row';
+    d.innerHTML=`<input type="text" placeholder="e.g. Final Exam" value="${esc(r.name)}" data-id="${r.id}" data-f="name">
+    <select data-id="${r.id}" data-f="cat">${cats(r.cat)}</select>
+    <input type="number" placeholder="85" min="0" max="100" step="0.01" value="${r.score}" data-id="${r.id}" data-f="score">
+    <input type="number" placeholder="20" min="0" max="100" step="0.01" value="${r.weight}" data-id="${r.id}" data-f="weight">
+    <button class="del-btn" data-del="${r.id}">&#215;</button>`;
+    c.appendChild(d);
+  });
+}
 
-    function renderDesk() {
-      const c = document.getElementById('deskRows');
-      c.innerHTML = '';
-      rows.forEach(r => {
-        const d = document.createElement('div');
-        d.className = 'desk-row';
-        d.innerHTML = `
-          <input type="text" placeholder="e.g. Midterm Exam" value="${escHtml(r.name)}" data-id="${r.id}" data-field="name">
-          <select data-id="${r.id}" data-field="category">${catOptions(r.category)}</select>
-          <input type="number" placeholder="85" min="0" max="100" step="0.01" value="${r.score}" data-id="${r.id}" data-field="score">
-          <input type="number" placeholder="20" min="0" max="100" step="0.01" value="${r.weight}" data-id="${r.id}" data-field="weight">
-          <button class="del-btn" data-del="${r.id}">&#215;</button>
-        `;
-        c.appendChild(d);
-      });
-    }
+function renderMob(){
+  const c=document.getElementById('mobCards');c.innerHTML='';
+  rows.forEach(r=>{
+    const d=document.createElement('div');d.className='mob-card';
+    d.innerHTML=`<div class="mob-card-top"><input type="text" placeholder="Assignment name" value="${esc(r.name)}" data-id="${r.id}" data-f="name"><button class="del-btn" data-del="${r.id}">&#215;</button></div>
+    <div class="mob-fields">
+      <div class="mob-field"><label>Category</label><select data-id="${r.id}" data-f="cat">${cats(r.cat)}</select></div>
+      <div class="mob-field"><label>Score %</label><input type="number" placeholder="85" min="0" max="100" step="0.01" value="${r.score}" data-id="${r.id}" data-f="score"></div>
+      <div class="mob-field" style="grid-column:1/-1"><label>Weight %</label><input type="number" placeholder="20" min="0" max="100" step="0.01" value="${r.weight}" data-id="${r.id}" data-f="weight"></div>
+    </div>`;
+    c.appendChild(d);
+  });
+}
 
-    function renderMob() {
-      const c = document.getElementById('mobCards');
-      c.innerHTML = '';
-      rows.forEach(r => {
-        const d = document.createElement('div');
-        d.className = 'mob-card';
-        d.innerHTML = `
-          <div class="mob-card-header">
-            <input type="text" placeholder="Assignment name" value="${escHtml(r.name)}" data-id="${r.id}" data-field="name">
-            <button class="del-btn" data-del="${r.id}">&#215;</button>
-          </div>
-          <div class="mob-fields">
-            <div class="mob-field">
-              <label>Category</label>
-              <select data-id="${r.id}" data-field="category">${catOptions(r.category)}</select>
-            </div>
-            <div class="mob-field">
-              <label>Score %</label>
-              <input type="number" placeholder="85" min="0" max="100" step="0.01" value="${r.score}" data-id="${r.id}" data-field="score">
-            </div>
-            <div class="mob-field" style="grid-column:1/-1;">
-              <label>Weight %</label>
-              <input type="number" placeholder="20" min="0" max="100" step="0.01" value="${r.weight}" data-id="${r.id}" data-field="weight">
-            </div>
-          </div>
-        `;
-        c.appendChild(d);
-      });
-    }
+function updateWeight(){
+  const tw=rows.reduce((s,r)=>s+(parseFloat(r.weight)||0),0);
+  const bar=document.getElementById('wBar');
+  bar.style.width=Math.min(tw,100).toFixed(1)+'%';
+  bar.classList.toggle('over',tw>100);
+  document.getElementById('wUsed').textContent=tw.toFixed(1)+'%';
+  document.getElementById('wRem').textContent=Math.max(0,100-tw).toFixed(1)+'%';
+  document.getElementById('wOver').style.display=tw>100?'':'none';
+}
 
-    function escHtml(s) {
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+function calcGrade(){
+  let tw=0,tp=0,v=0;
+  rows.forEach(r=>{const s=parseFloat(r.score),w=parseFloat(r.weight);if(!isNaN(s)&&!isNaN(w)&&w>0){tp+=s*(w/100);tw+=w;v++;}});
+  return v&&tw?{g:(tp/tw)*100,tw,tp}:null;
+}
 
-    function updateWeight() {
-      const tw = rows.reduce((s, r) => s + (parseFloat(r.weight)||0), 0);
-      const bar = document.getElementById('weightBar');
-      bar.style.width = Math.min(tw, 100).toFixed(1) + '%';
-      bar.classList.toggle('over', tw > 100);
-      document.getElementById('weightUsed').textContent = tw.toFixed(1) + '%';
-      document.getElementById('weightRem').textContent = Math.max(0, 100-tw).toFixed(1) + '%';
-    }
+function calcAll(){
+  const res=calcGrade();
+  if(!res){
+    ['sGrade','sLetter','sWeighted'].forEach(id=>{const e=document.getElementById(id);e.textContent='—';e.className='stat-val';});
+    doPass();doTarget();return;
+  }
+  const{g,tw,tp}=res;
+  const sg=document.getElementById('sGrade'),sl=document.getElementById('sLetter');
+  sg.textContent=g.toFixed(2)+'%';sg.className='stat-val '+CLS(g);
+  sl.textContent=LTRS(g);sl.className='stat-val '+CLS(g);
+  document.getElementById('sWeighted').textContent=tp.toFixed(2);
+  doPass();doTarget();
+}
 
-    function calcGrade() {
-      let tw=0, tp=0, valid=0;
-      rows.forEach(r => {
-        const s=parseFloat(r.score), w=parseFloat(r.weight);
-        if (!isNaN(s)&&!isNaN(w)&&w>0) { tp+=s*(w/100); tw+=w; valid++; }
-      });
-      if (!valid||!tw) return null;
-      return { grade:(tp/tw)*100, tw, tp };
-    }
+function doPass(){
+  const res=calcGrade(),thresh=parseFloat(document.getElementById('passAt').value)||60;
+  const el=document.getElementById('passResult');
+  if(!res){el.innerHTML='<span style="color:var(--ink3)">Add scored assignments to calculate.</span>';return;}
+  const{g,tw,tp}=res,rem=100-tw;
+  if(rem<=0){el.innerHTML=g>=thresh?`<span class="ok">Already at ${g.toFixed(2)}% — you pass!</span>`:`<span class="bad">At ${g.toFixed(2)}% — no remaining weight.</span>`;return;}
+  const need=((thresh-(tp/100))*100/rem);
+  if(need<=0)el.innerHTML=`<span class="ok">Already passing at ${g.toFixed(2)}%!</span>`;
+  else if(need>100)el.innerHTML=`<span class="bad">Need ${need.toFixed(1)}% on remaining ${rem.toFixed(1)}% — not possible.</span>`;
+  else{const c=need>=90?'bad':need>=75?'warn':'ok';el.innerHTML=`Need <span class="${c}">${need.toFixed(1)}%</span> on remaining <b>${rem.toFixed(1)}%</b> to pass at ${thresh}%.`;}
+}
 
-    function doCalc() {
-      const res = calcGrade();
-      if (!res) {
-        ['mGrade','mLetter','mWeighted'].forEach(id => {
-          const el=document.getElementById(id); el.textContent='—'; el.className='metric-value';
-        });
-        doPassCalc(); doTargetCalc(); return;
-      }
-      const { grade, tw, tp } = res;
-      const l=getLetter(grade), cls=getLetterCls(grade);
-      const mg=document.getElementById('mGrade'), ml=document.getElementById('mLetter'), mw=document.getElementById('mWeighted');
-      mg.textContent=grade.toFixed(2)+'%'; mg.className='metric-value '+cls;
-      ml.textContent=l; ml.className='metric-value '+cls;
-      mw.textContent=tp.toFixed(2);
-      doPassCalc(); doTargetCalc();
-    }
+function doTarget(){
+  const res=calcGrade(),tgt=parseFloat(document.getElementById('targetPct').value)||90,rw=parseFloat(document.getElementById('remWt').value)||0;
+  const el=document.getElementById('targetResult');
+  let cp=res?res.tp:0;
+  if(rw<=0){const g=res?res.g:0;el.innerHTML=g>=tgt?`<span class="ok">Already at ${g.toFixed(2)}% — target met!</span>`:`<span class="bad">No remaining weight. ${g.toFixed(2)}% &lt; ${tgt}%.</span>`;return;}
+  const need=((tgt-(cp/100))*100/rw);
+  if(need<=0)el.innerHTML=`<span class="ok">Already on track — target reachable!</span>`;
+  else if(need>100)el.innerHTML=`<span class="bad">Need ${need.toFixed(1)}% — impossible to reach ${tgt}%.</span>`;
+  else{const c=need>=95?'bad':need>=80?'warn':'ok';el.innerHTML=`Need <span class="${c}">${need.toFixed(1)}%</span> on remaining <b>${rw}%</b> to reach <b>${tgt}%</b>.`;}
+}
 
-    function doPassCalc() {
-      const res=calcGrade(), thresh=parseFloat(document.getElementById('passThresh').value)||60;
-      const el=document.getElementById('passResult');
-      if (!res) { el.innerHTML='<span style="color:var(--text2)">Add scored assignments to calculate.</span>'; return; }
-      const { grade, tw, tp } = res;
-      const rem = 100-tw;
-      if (rem<=0) {
-        el.innerHTML = grade>=thresh
-          ? `<span class="highlight-good">Already at ${grade.toFixed(2)}% — you pass!</span>`
-          : `<span class="highlight-bad">At ${grade.toFixed(2)}% with no remaining weight.</span>`;
-        return;
-      }
-      const needed = ((thresh-(tp/100))*100/rem);
-      if (needed<=0) el.innerHTML=`<span class="highlight-good">Already passing at ${grade.toFixed(2)}%!</span>`;
-      else if (needed>100) el.innerHTML=`<span class="highlight-bad">Need ${needed.toFixed(1)}% on remaining ${rem.toFixed(1)}% — not possible.</span>`;
-      else {
-        const cls=needed>=90?'highlight-bad':needed>=75?'highlight-warn':'highlight-good';
-        el.innerHTML=`Need <span class="${cls}">${needed.toFixed(1)}%</span> on remaining <b>${rem.toFixed(1)}%</b> weight to pass at ${thresh}%.`;
-      }
-    }
+function handleInput(e){
+  const el=e.target,id=parseInt(el.dataset.id),f=el.dataset.f;
+  if(!id||!f)return;
+  const row=rows.find(r=>r.id===id);if(!row)return;
+  row[f]=el.value;
+  if(f==='weight')updateWeight();
+  calcAll();
+  if(el.closest('.mob-card'))renderDesk();
+  else if(el.closest('.a-row'))renderMob();
+}
+function handleClick(e){if(e.target.dataset.del)delRow(parseInt(e.target.dataset.del));}
+function doReset(){if(!confirm('Reset all assignments?'))return;rows=[];rid=0;render();updateWeight();calcAll();}
 
-    function doTargetCalc() {
-      const res=calcGrade();
-      const target=parseFloat(document.getElementById('targetGrade').value)||90;
-      const remW=parseFloat(document.getElementById('remainingWeight').value)||0;
-      const el=document.getElementById('targetResult');
-      let cp=0; if (res) cp=res.tp;
-      if (remW<=0) {
-        const g=res?res.grade:0;
-        el.innerHTML=g>=target?`<span class="highlight-good">Already at ${g.toFixed(2)}% — target met!</span>`:`<span class="highlight-bad">No remaining weight. ${g.toFixed(2)}% &lt; ${target}%.</span>`;
-        return;
-      }
-      const needed=((target-(cp/100))*100/remW);
-      if (needed<=0) el.innerHTML=`<span class="highlight-good">Already on track — target reachable!</span>`;
-      else if (needed>100) el.innerHTML=`<span class="highlight-bad">Need ${needed.toFixed(1)}% — impossible to reach ${target}%.</span>`;
-      else {
-        const cls=needed>=95?'highlight-bad':needed>=80?'highlight-warn':'highlight-good';
-        el.innerHTML=`Need <span class="${cls}">${needed.toFixed(1)}%</span> on remaining <b>${remW}%</b> to reach <b>${target}%</b>.`;
-      }
-    }
+['deskRows','mobCards'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('input',handleInput);
+  el.addEventListener('change',handleInput);
+  el.addEventListener('click',handleClick);
+});
+document.getElementById('addDesk').onclick=addRow;
+document.getElementById('addMob').onclick=addRow;
+document.getElementById('themeBtn').onclick=toggleDark;
+document.getElementById('resetIconBtn').onclick=doReset;
+document.getElementById('resetBtn').onclick=doReset;
+document.getElementById('passAt').oninput=doPass;
+document.getElementById('targetPct').oninput=doTarget;
+document.getElementById('remWt').oninput=doTarget;
 
-    function handleRowInput(e) {
-      const el=e.target, id=parseInt(el.dataset.id), field=el.dataset.field;
-      if (!id||!field) return;
-      const row=rows.find(r=>r.id===id);
-      if (!row) return;
-      row[field]=el.value;
-      if (field==='weight') updateWeight();
-      doCalc();
-      // keep the other view in sync without losing focus
-      if (el.closest('.mob-card')) renderDesk();
-      else if (el.closest('.desk-row')) renderMob();
-    }
-
-    function handleRowClick(e) {
-      if (e.target.dataset.del) deleteRow(parseInt(e.target.dataset.del));
-    }
-
-    function doReset() {
-      if (!confirm('Reset everything? All assignments will be cleared.')) return;
-      rows=[]; rowId=0; renderAll(); updateWeight(); doCalc();
-    }
-
-    // Event delegation
-    ['deskRows','mobCards'].forEach(id => {
-      const el = document.getElementById(id);
-      el.addEventListener('input', handleRowInput);
-      el.addEventListener('change', handleRowInput);
-      el.addEventListener('click', handleRowClick);
-    });
-
-    document.getElementById('addRowDesk').onclick = addRow;
-    document.getElementById('addRowMob').onclick  = addRow;
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('resetIconBtn').onclick = doReset;
-    document.getElementById('resetBtn').onclick = doReset;
-    document.getElementById('targetGrade').oninput = doTargetCalc;
-    document.getElementById('remainingWeight').oninput = doTargetCalc;
-    document.getElementById('passThresh').oninput = doPassCalc;
-
-    initPicker();
-    addRow(); addRow(); addRow();
-  </script>
+initPicker();
+addRow();addRow();addRow();
+</script>
 </body>
 </html>
